@@ -12,6 +12,7 @@ const list<Reserva>& Agenda::reservas() const {
 void Agenda::registrar_reserva(Reserva r) {
     _cantReservas++;
     _reservas.push_back(r);
+    _reservas_por_dia[principio_del_dia(r.fecha_hora)]++; // O (log D)
 }
 
 int Agenda::cantidad_reservas() const {
@@ -35,16 +36,13 @@ vector<Reserva> Agenda::ultimas_reservas(int k) const {
 int Agenda::reservas_del_dia(timestamp t) const {
     // Implementación trivial O(n): recorre toda la lista
     timestamp inicio_dia = principio_del_dia(t);
-    timestamp fin_dia = fin_del_dia(t);
-
-    int cantidad = 0;
-    for (const Reserva& r : _reservas) {
-        if (r.fecha_hora >= inicio_dia && r.fecha_hora < fin_dia) {
-            cantidad++;
-        }
-    }
-
-    return cantidad;
+    auto it = _reservas_por_dia.find(inicio_dia); //find busca directo al dia buscado
+    if (it == _reservas_por_dia.end()) // si el dia no tiene reservas
+        return 0;
+    
+        return it->second; // la cantidad de reservas de ese dia 
+    
+    
 }
 
 vector<string> Agenda::clientes_frecuentes(int k) const {
