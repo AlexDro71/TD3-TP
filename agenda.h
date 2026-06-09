@@ -5,6 +5,7 @@
 #include <vector>
 #include <list>
 #include "lib.h"
+#include<bits/stdc++.h>
 
 using namespace std;
 
@@ -13,7 +14,7 @@ class Agenda {
     /**
      * Constructor.
      */
-    Agenda();
+    Agenda() ;
 
     /**
      * Lista de todas las reservas registradas.
@@ -82,6 +83,7 @@ class Agenda {
 
     /** Listado de todas las reservas realizadas */
     list<Reserva> _reservas;
+    int _cantReservas;
 };
 
 #endif

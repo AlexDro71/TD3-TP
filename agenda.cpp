@@ -1,40 +1,33 @@
 #include "agenda.h"
 #include <algorithm>
 
-Agenda::Agenda() {}
+Agenda::Agenda(){ 
+    _cantReservas=0; 
+}
 
 const list<Reserva>& Agenda::reservas() const {
     return _reservas;
 }
 
 void Agenda::registrar_reserva(Reserva r) {
+    _cantReservas++;
     _reservas.push_back(r);
 }
 
 int Agenda::cantidad_reservas() const {
-    // Implementación trivial O(n): recorre toda la lista
-    return _reservas.size();
+    return _cantReservas;
 }
 
 vector<Reserva> Agenda::ultimas_reservas(int k) const {
     // Implementación trivial O(n): recorre toda la lista
     vector<Reserva> resultado;
     const list<Reserva>& todas = _reservas;
-
-    // Tomamos las últimas k (o todas si hay menos de k)
-    int total = todas.size();
-    int inicio = max(0, total - k);
-    int i = 0;
-
-    for (const Reserva& r : todas) {
-        if (i >= inicio) {
-            resultado.push_back(r);
-        }
-        i++;
+    auto it = todas.rbegin();
+    if(_cantReservas < k) k=_cantReservas;
+    for(int i=0; i<k; i++){
+        resultado.push_back(*it);
+        ++it;
     }
-
-    // Las invertimos para que queden de más reciente a más antigua
-    reverse(resultado.begin(), resultado.end());
 
     return resultado;
 }
