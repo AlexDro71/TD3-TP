@@ -84,6 +84,7 @@ class Agenda {
     /** Listado de todas las reservas realizadas */
     list<Reserva> _reservas;
     int _cantReservas;
+    map<timestamp, int> _reservas_por_dia;
 };
 
 #endif
