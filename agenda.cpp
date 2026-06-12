@@ -13,6 +13,19 @@ void Agenda::registrar_reserva(Reserva r) {
     _cantReservas++;
     _reservas.push_back(r);
     _reservas_por_dia[principio_del_dia(r.fecha_hora)]++; // O (log D)
+    string cliente = r.cliente; //el nombre del cliente de la reserva 
+
+    auto it = _reservas_por_cliente.find(cliente); //O(log C) quiero saber si el cliente ya tenia reserva
+    if (it != _reservas_por_cliente.end()){
+        int cantidad_antes = it->second // cantidad de reservas de ese cliente de antes
+        _ranking.erase({cantidad_antes, cliente}); // lo borro del ranking para cambiarlo de posicion
+        it->second =  cantidad_antes +1; // se le agrega una reserva
+        _ranking.insert({cantidad_antes +1, cliente})// lo guardo en el set
+            }else{
+            //el cliente es nuevo y no tenia reservas anteriores y es su primera
+            _ranking_por_cliente[cliente] = 1; // lo creo en el map 
+            _ranking.insert({1, cliente}); // lo incorporo al set de mas frecuentes
+        
 }
 
 int Agenda::cantidad_reservas() const {
@@ -45,10 +58,10 @@ int Agenda::reservas_del_dia(timestamp t) const {
     
 }
 
-vector<string> Agenda::clientes_frecuentes(int k) const {
+vector<string> Agenda::clientes_frecuentes(int k) const { //O(k)
    vector<string> resultado;
-    auto it = frecuentes.rbegin();
-    for(int i =0; i< k && it != ranking.end() ; i++ , ++it){
+    auto it = _ranking.rbegin();
+    for(int i =0; i< k && it != _ranking.end() ; i++ , ++it){
         resultado.pushback(it->second); //el nombre del cliente
     }
     return resultado;
