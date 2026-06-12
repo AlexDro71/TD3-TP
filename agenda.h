@@ -85,6 +85,7 @@ class Agenda {
     list<Reserva> _reservas;
     int _cantReservas;
     map<timestamp, int> _reservas_por_dia;
+    set<pair<int, string>> ranking; // cantidad de reservas, cliente
 };
 
 #endif
