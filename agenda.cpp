@@ -46,34 +46,11 @@ int Agenda::reservas_del_dia(timestamp t) const {
 }
 
 vector<string> Agenda::clientes_frecuentes(int k) const {
-    // Implementación trivial O(n*c): recorre todas las reservas y ordena
-    // Primero contamos las reservas por cliente
-    vector<pair<string, int>> conteo;
-
-    for (const Reserva& r : _reservas) {
-        bool encontrado = false;
-        for (auto& p : conteo) {
-            if (p.first == r.cliente) {
-                p.second++;
-                encontrado = true;
-                break;
-            }
-        }
-        if (!encontrado) {
-            conteo.push_back({r.cliente, 1});
-        }
+   vector<string> resultado;
+    auto it = frecuentes.rbegin();
+    for(int i =0; i< k && it != ranking.end() ; i++ , ++it){
+        resultado.pushback(it->second); //el nombre del cliente
     }
-
-    // Ordenamos por cantidad de reservas (descendente)
-    sort(conteo.begin(), conteo.end(), [](const pair<string, int>& a, const pair<string, int>& b) {
-        return a.second > b.second;
-    });
-
-    // Tomamos los primeros k
-    vector<string> resultado;
-    for (int i = 0; i < k && i < (int)conteo.size(); i++) {
-        resultado.push_back(conteo[i].first);
-    }
-
     return resultado;
 }
+    
